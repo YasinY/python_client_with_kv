@@ -9,6 +9,7 @@ from application.login.encryption.NaiveDiffiehellman import NaiveDiffieHellman
 
 
 class Login:
+
     def __init__(self, remoteHost, remotePort):
         self.m_encryptionEnabled = True
         self.m_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -23,7 +24,7 @@ class Login:
     def sendPacket(self, data):
         if self.m_encryptionEnabled:
             BS = 32
-            self.m_encryptionModule = AES.new(self.mdkey.hexdigest(), AES.MODE_CBC, 'This is an IV456')
+            self.m_encryptionModule = AES.new(self.mdKey.hexdigest(), AES.MODE_CBC, 'This is an IV456')
             pad = lambda s: s + (BS - len(s) % BS) * chr(BS - len(s) % BS)
             encData = self.m_encryptionModule.encrypt(pad(data))
             self.m_socket.send(encData)
@@ -44,11 +45,11 @@ class Login:
         print "local shared " + str(self.m_localShared)
         self.sendPacket(encPacket)
         self.m_encryptionEnabled = True
-        self.mdkey = hashlib.md5(str(mySecret))
-        self.m_encryptionModule = AES.new(self.mdkey.hexdigest(), AES.MODE_CBC, 'This is an IV456')
+        self.mdKey = hashlib.md5(str(mySecret))
+        self.m_encryptionModule = AES.new(self.mdKey.hexdigest(), AES.MODE_CBC, 'This is an IV456')
         print "Client: Enabling Encryption Layer"
 
-    def listenloop(self):
+    def listenLoop(self):
         print "Listen Loop"
         while 1:
             data = self.m_socket.recv(1024)
@@ -61,10 +62,10 @@ class Login:
             }
 
             if self.m_encryptionEnabled:
-                self.m_encryptionModule = AES.new(self.mdkey.hexdigest(), AES.MODE_CBC, 'This is an IV456')
+                self.m_encryptionModule = AES.new(self.mdKey.hexdigest(), AES.MODE_CBC, 'This is an IV456') # TODO
                 print "Client: Handling Encrypted Packet"
                 BS = 32
-                decData = self.m_encryptionModule.decrypt(data)
+                decData = self.m_encryptionModule.encrypt(data)
                 unpad = lambda s: s[:-ord(s[len(s) - 1:])]
                 (packetID,), restData = netstruct.iter_unpack("i", unpad(decData))
                 print "Encrypted Packet ID:", packetID
@@ -101,7 +102,7 @@ class Login:
         print "Connecting..."
         self.m_socket.connect((self.m_remoteHost, self.m_remotePort))
         print "Connected!"
-        self.m_handleThread = Thread(target=self.listenloop)
+        self.m_handleThread = Thread(target=self.listenLoop)
         self.m_handleThread.start()
         print "Message Handler created"
 
