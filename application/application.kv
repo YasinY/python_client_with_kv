@@ -22,11 +22,13 @@
             id: username
             pos: root.center_x - self.width / 2, root.center_y
             size_hint: 0.25, 0.05
-        Label:
+        Label: # Seems like there is a bug in kivy that you can't put a label right under AnchorLayout without having size_hints's values above 0 (0.1+)
+            font_size: 18
             text: "Username" # Looks buggy because of the upper rectangle mod (to show grids/layouts)
             pos: username.pos[0] - username.width / 4, username.pos[1] + (username.height / 2) - self.height
             size_hint: 0, 0
         Label:
+            font_size: 18
             text: "Password"
             pos: password.pos[0] - password.width / 4, password.pos[1] + (password.height / 2) - self.height
             size_hint: 0, 0
@@ -52,21 +54,27 @@
     name: "chatHandler"
     id: chatHandler
     BoxLayout:
-        size_hint: (None, None)
         orientation: "vertical" # Top to bottom
+        size_hint: (0.2, 1)
         Chat:
             id: chat_1 #unique chat id
+        Chat:
+            id: chat_2 #unique chat id
+        Chat:
+            id: chat_3 #unique chat id
+        Chat:
+            id: chat_4 #unique chat id
     ## APPEND CHATS HERE ##
     ## END OF CHAT APPEND ##
+
+# CHAT DESIGN
 <Chat>
+    id: None
     BoxLayout:
-        size_hint: (None, None)
         orientation: "vertical"
         Label:
-            halign:"left"
-            valign:"top"
-            text: "[b]title[/b]"
+            text: "[ref=title]title[/ref]"
             markup: True
+            on_ref_press: root.openChat(self.text)
         Label:
             text: "last_message"
-# CHATS HERE
