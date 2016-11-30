@@ -3,7 +3,12 @@
 #:import Chat application.screen.impl.chat.impl.Chat
 #Declares parent properties
 #Screenmanager
-
+<Widget>:
+    canvas.after:
+        Line:
+            rectangle: self.x+1,self.y+1,self.width-1,self.height-1
+            dash_offset: 5
+            dash_length: 3
 <ScreenManagement>
     LoginScreen:
     ChatHandler:
@@ -12,39 +17,56 @@
 <LoginScreen>:
     name: "loginScreen"
     id: loginScreen
-    Label:
-        text: 'Username'
-        pos: username.pos[0] - self.width, username.pos[1] - self.height / 3
-        size_hint: 0, 0
-    TextInput:
-        id: username
-        pos: root.center_x - self.width / 2, root.center_y
-        size_hint: 0.25, 0.05
-    Label:
-        text: 'Password'
-        pos: password.pos[0] - self.width, password.pos[1] - self.height / 3
-        size_hint: 0, 0
-    TextInput:
-        id: password
-        password: True
-        size_hint: 0.25, 0.05
-        pos: username.pos[0], username.pos[1] - self.height
-    Button:
-        id: login
-        text: 'Login'
-        pos: 30, 30
-        size_hint: password.size_hint_x / 2, 0.05
-        pos: password.pos[0], password.pos[1] - self.height
-        on_press: root.login(username.text, password.text)
-    Button:
-        id: register
-        text: 'Register'
-        pos: 30, 30
-        size_hint: password.size_hint_x / 2, 0.05
-        pos: login.pos[0] + self.width, login.pos[1]
+    AnchorLayout:
+        TextInput:
+            id: username
+            pos: root.center_x - self.width / 2, root.center_y
+            size_hint: 0.25, 0.05
+        Label:
+            text: "Username" # Looks buggy because of the upper rectangle mod (to show grids/layouts)
+            pos: username.pos[0] - username.width / 4, username.pos[1] + (username.height / 2) - self.height
+            size_hint: 0, 0
+        Label:
+            text: "Password"
+            pos: password.pos[0] - password.width / 4, password.pos[1] + (password.height / 2) - self.height
+            size_hint: 0, 0
+        TextInput:
+            id: password
+            password: True
+            size_hint: 0.25, 0.05
+            pos: username.pos[0], username.pos[1] - self.height
+        Button:
+            id: login
+            text: "Login"
+            pos: 30, 30
+            size_hint: password.size_hint_x / 2, 0.05
+            pos: password.pos[0], password.pos[1] - self.height
+            on_press: root.login(username.text, password.text)
+        Button:
+            id: register
+            text: "Register"
+            pos: 30, 30
+            size_hint: password.size_hint_x / 2, 0.05
+            pos: login.pos[0] + self.width, login.pos[1]
 <ChatHandler>
     name: "chatHandler"
     id: chatHandler
-    Label:
-        text: "Chathandler here" # The text to display
+    BoxLayout:
+        size_hint: (None, None)
+        orientation: "vertical" # Top to bottom
+        Chat:
+            id: chat_1 #unique chat id
+    ## APPEND CHATS HERE ##
+    ## END OF CHAT APPEND ##
+<Chat>
+    BoxLayout:
+        size_hint: (None, None)
+        orientation: "vertical"
+        Label:
+            halign:"left"
+            valign:"top"
+            text: "[b]title[/b]"
+            markup: True
+        Label:
+            text: "last_message"
 # CHATS HERE
