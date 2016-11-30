@@ -1,12 +1,10 @@
-from kivy.app import App
-from kivy.core.window import Window
+from kivy.lang import Builder
+from kivy.uix.screenmanager import Screen
 
-from LoginScreenWidgets import LoginScreenWidgets
+from application.login.LoginScreenWidgets import LoginScreenWidgets
 
 
-# Init for the LoginScreen
-
-class LoginScreen(App):
-    def build(self):
-        Window.size = (742, 530)
+class LoginScreen(Screen):
+    def __build__(self):
+        Builder.load_file("./login/LoginScreen.kv")
         return LoginScreenWidgets()

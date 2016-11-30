@@ -1,9 +1,4 @@
-from application.login.LoginScreen import LoginScreen
-
-
-def start():
-    LoginScreen().run()
-
+from application.login.Application import Application
 
 if __name__ == "__main__":
-    start()
+    Application().run()
