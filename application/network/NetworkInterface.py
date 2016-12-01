@@ -21,6 +21,7 @@ class NetworkInterface:
         self.m_remotePort = Config.PORT
         self.m_handleThread = None
         self.m_MD5Key = None
+        self.m_loginCallback = None
         self.m_packetHandlers = {
             0: self.handleHelloResponse,
             1: self.handleLoginResponse
@@ -29,6 +30,13 @@ class NetworkInterface:
     def sendPacket(self, packetID, data):
         packetData = netstruct.pack("i", packetID)
         packetData += data
+        if self.m_encryptionEnabled:
+            print "Sending Encrypted Packet"
+            encData = self.m_encryptionModule.encryptData(packetData)
+            self.m_socket.send(encData)
+        else:
+            print "Sending Plain Packet"
+            self.m_socket.send(packetData)
 
     def handleHelloResponse(self, data):
         print "Got Hello Response"
@@ -42,8 +50,28 @@ class NetworkInterface:
         self.m_encryptionModule = EncryptionModule(self.m_MD5Key.hexdigest())
         print "Enabling Local Encryption Layer"
 
+    def handleLoginOkay(self, data):
+        print "Login Okay"
+        self.m_loginCallback(True, data)
+        return
+
+    def handleLoginError(self, status, data):
+        print "Login Error"
+        self.m_loginCallback(False, data)
+        return
+
     def handleLoginResponse(self, data):
         print "Got Login Response"
+        (statusResponse,), restData = netstruct.iter_unpack("i", data)
+        if statusResponse == 0:
+            self.handleLoginOkay(restData)
+        else:
+            self.handleLoginError(statusResponse, restData)
+
+    def login(self, username, password, callback):
+        self.m_loginCallback = callback
+        data = netstruct.pack("b$b$", username, password)
+        self.sendPacket(4, data)
 
     def listenLoop(self):
         print "Listen Loop Begin..."
