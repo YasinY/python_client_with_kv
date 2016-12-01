@@ -7,6 +7,7 @@ class RoomManager:
         self.m_rooms = []
 
     def addRoom(self, roomID, roomName, userCount):
+        print "Room Manager added room " + roomName
         self.m_rooms.append(Room(roomID, roomName, userCount))
 
     def getRoomByID(self, roomID):

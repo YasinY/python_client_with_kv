@@ -1,11 +1,13 @@
 from application.lang.Singleton import Singleton
 from application.network.encryption.DiffieHellman import DiffieHellman
 from application.network.encryption.EncyptionModule import EncryptionModule
+from application.manager.RoomManager import RoomManager
 from application import Config
 import socket
 import netstruct
 from threading import Thread
 import hashlib
+from time import sleep
 
 @Singleton
 class NetworkInterface:
@@ -31,6 +33,10 @@ class NetworkInterface:
         }
 
     def handleRoomMessage(self, data):
+        print "Handling Room Message"
+        (bRoomID), restData = netstruct.iter_unpack("b$", data)
+        roomID = bRoomID[0]
+        RoomManager.Instance().getRoomByID(roomID).callbackRoomMessage(restData)
         return
 
     def handleRoomAdd(self, data):
@@ -55,6 +61,7 @@ class NetworkInterface:
         else:
             print "Sending Plain Packet"
             self.m_socket.send(packetData)
+        sleep(0.05)
 
     def handleHelloResponse(self, data):
         print "Got Hello Response"
