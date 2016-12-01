@@ -56,9 +56,14 @@
     name: "chatHandler"
     id: chatHandler
     BoxLayout:
-        id: chatContainer
+        id: chatsContainer
         orientation: "vertical" # Top to bottom
-        size_hint: (0.3, 1)
+        size_hint: (0.39, 1) # Takes 0.3 of the screen
+    BoxLayout:
+        id: chatContainer
+        orientation: "vertical"
+        size_hint: (1, 1)
+
 
 # CHAT DESIGN
 <Chat>
@@ -73,6 +78,8 @@
             text: "[ref=title]" + root.dataName + "[/ref]"
             markup: True
             on_ref_press: root.openChat(self, root.dataID, root.dataName)
-            color: (1, 1, 1)
+            size_hint: (1, 0.4) # Takes x,y of the (chatContainer.size_hint[x,y]) given
         Label:
-            text: root.dataLastMsg
+            size_hint: (1, 0.6)
+            text: root.dataLastMsg # Description here
+            multiline: True
