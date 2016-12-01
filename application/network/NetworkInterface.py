@@ -1,9 +1,11 @@
 from application.lang.Singleton import Singleton
 from application.network.encryption.DiffieHellman import DiffieHellman
+from application.network.encryption.EncyptionModule import EncryptionModule
 from application import Config
 import socket
 import netstruct
 from threading import Thread
+import hashlib
 
 @Singleton
 class NetworkInterface:
@@ -18,13 +20,27 @@ class NetworkInterface:
         self.m_remoteHost = Config.SERVER_IP
         self.m_remotePort = Config.PORT
         self.m_handleThread = None
+        self.m_MD5Key = None
         self.m_packetHandlers = {
             0: self.handleHelloResponse,
             1: self.handleLoginResponse
         }
 
+    def sendPacket(self, packetID, data):
+        packetData = netstruct.pack("i", packetID)
+        packetData += data
+
     def handleHelloResponse(self, data):
         print "Got Hello Response"
+        print "Remote Shared Key: ", str(data)
+        self.m_remoteShared = long(data)
+        self.m_localSecret = self.m_DHModule.exchange(self.m_remoteShared)
+        self.m_localShared = self.m_DHModule.shared()
+        self.sendPacket(2, str(self.m_localShared))
+        self.m_encryptionEnabled = True
+        self.m_MD5Key = hashlib.md5(str(self.m_localSecret))
+        self.m_encryptionModule = EncryptionModule(self.m_MD5Key.hexdigest())
+        print "Enabling Local Encryption Layer"
 
     def handleLoginResponse(self, data):
         print "Got Login Response"
