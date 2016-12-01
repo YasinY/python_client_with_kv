@@ -31,7 +31,7 @@ class NetworkInterface:
         }
 
     def handleRoomMessage(self, data):
-
+        return
 
     def handleRoomAdd(self, data):
         (roomid, roomtype, usercount, roomname) = netstruct.unpack("b$iib$", data)

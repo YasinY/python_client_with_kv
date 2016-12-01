@@ -7,7 +7,7 @@ class RoomManager:
         self.m_rooms = []
 
     def addRoom(self, roomID, roomName, userCount):
-        self.m_rooms.append(Room(roomID, roomName))
+        self.m_rooms.append(Room(roomID, roomName, userCount))
 
     def getRoomByID(self, roomID):
         for room in self.m_rooms:
