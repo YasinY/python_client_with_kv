@@ -63,10 +63,6 @@
         size_hint: (0.39, 1) # Takes 0.3 of the screen
     AnchorLayout:
         id: chatContainer
-        anchor_x: 'right' # WHY DOESNT THIS SHIT CENTJPOIGEGKIPO=AHKO?PEGHROKPGEPOKEG
-        anchor_y: 'center'
-        size_hint: (1 - chatsContainer.size_hint[0], 1)
-# CHAT DESIGN
 <ChatFrame>
     name: "chatFrame"
     id: chatFrame
@@ -89,9 +85,12 @@
 <Chat>
     dataMemberList: "Bennet, Yasin, Lasse"
     dataChatHistory: "Test"
-    Button:
-        text: "3rq"
-        size_hint: ((1-0.61), 0.2)
+    AnchorLayout:
+        anchor_x: 'right' # WHY DOESNT THIS SHIT CENTJPOIGEGKIPO=AHKO?PEGHROKPGEPOKEG
+        anchor_y: 'center'
+        size_hint: (1 - 0.39, 1)
+        Button:
+            text: "TEST"
 
 
 
