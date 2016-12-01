@@ -4,3 +4,6 @@ class Message:
         self.m_ownerID = ownerID
         self.m_roomID = roomID
         self.m_messageContent = messageContent
+
+    def getMessageID(self):
+        return self.m_messageID

@@ -1,8 +1,8 @@
 from application.network.chat.ChatHistory import ChatHistory
 
 class Room:
-    def __init__(self, roomid, roomname):
-        self.m_ChatHistory = ChatHistory()
+    def __init__(self, roomID, roomName):
+        self.m_chatHistory = ChatHistory()
         return
 
     def callbackRoomUpdate(self, data):
@@ -12,4 +12,5 @@ class Room:
         return
 
     def callbackRoomMessage(self, data):
+        self.m_chatHistory.appendMessage("", "msg_1", "Content")
         return
