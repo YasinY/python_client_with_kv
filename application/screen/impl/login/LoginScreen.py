@@ -1,15 +1,13 @@
 from kivy.uix.screenmanager import Screen
-from application.network.NetworkInterface import NetworkInterface
 
-# INTERFACE FOR KIVY
-from application.screen.impl.chat.impl.Chat import Chat
+from application.network.NetworkInterface import NetworkInterface
 
 
 class LoginScreen(Screen):
     def switch(self):
         # TODO OR DO LOGIN CHECK HERE
         self.parent.current = 'chatHandler'
-        self.parent.get_screen('chatHandler').loadChats()
+        self.parent.get_screen('chatHandler').loadChatFrames()
 
     def loginCallback(self, status, data):
         if status:
