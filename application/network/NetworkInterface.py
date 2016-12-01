@@ -22,10 +22,24 @@ class NetworkInterface:
         self.m_handleThread = None
         self.m_MD5Key = None
         self.m_loginCallback = None
+        self.m_roomAddCallback = None
         self.m_packetHandlers = {
             0: self.handleHelloResponse,
-            1: self.handleLoginResponse
+            1: self.handleLoginResponse,
+            2: self.handleRoomAdd
         }
+
+    def handleRoomAdd(self, data):
+        (roomid, roomtype, usercount, roomname) = netstruct.unpack("b$iib$", data)
+        self.m_roomAddCallback(roomid, roomtype, usercount, roomname)
+        print "ID: " + roomid
+        print "Type: " + str(roomtype)
+        print "Users: " + str(usercount)
+        print "Name: " + roomname
+
+    def requestRoomList(self, roomAddCallback):
+        self.m_roomAddCallback = roomAddCallback;
+        self.sendPacket(5, "")
 
     def sendPacket(self, packetID, data):
         packetData = netstruct.pack("i", packetID)
@@ -72,6 +86,10 @@ class NetworkInterface:
         self.m_loginCallback = callback
         data = netstruct.pack("b$b$", username, password)
         self.sendPacket(4, data)
+
+    def joinRoom(self, roomid, password, callback):
+        data = netstruct.pack("b$b$", roomid, password)
+        self.sendPacket(6, data)
 
     def listenLoop(self):
         print "Listen Loop Begin..."
