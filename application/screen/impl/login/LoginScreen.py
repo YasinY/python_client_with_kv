@@ -2,11 +2,14 @@ from kivy.uix.screenmanager import Screen
 
 
 # INTERFACE FOR KIVY
+from application.screen.impl.chat.impl.Chat import Chat
+
 
 class LoginScreen(Screen):
     def switch(self):
         # TODO OR DO LOGIN CHECK HERE
         self.parent.current = 'chatHandler'
+        self.parent.get_screen('chatHandler').loadChats()
 
     def login(self, username, password):  # DO LOGIN HERE
         print "Logging in: " + username + " password " + password

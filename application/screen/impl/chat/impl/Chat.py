@@ -1,8 +1,4 @@
-from kivy.core.text.markup import MarkupLabel
-from kivy.lang import Builder
 from kivy.uix.screenmanager import Screen
-
-from application.screen.impl.chat.impl import ChatWidgets
 
 
 class Chat(Screen):
