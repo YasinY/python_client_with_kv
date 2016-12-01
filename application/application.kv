@@ -73,8 +73,9 @@
     BoxLayout:
         orientation: "vertical"
         Label:
-            text: "[ref=title]title[/ref]"
+            dataName: "title"
+            text: "[ref=title]" + self.dataName + "[/ref]"
             markup: True
-            on_ref_press: root.openChat(self.text)
+            on_ref_press: root.openChat(self.dataName)
         Label:
             text: "last_message"

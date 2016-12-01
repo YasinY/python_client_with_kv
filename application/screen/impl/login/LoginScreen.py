@@ -13,7 +13,7 @@ class LoginScreen(Screen):
         if not self.canLogin(username, password):
             print "Insufficient credentials"
         else:
-            self.switch() #
+            self.switch()
 
     def canLogin(self, username, password):
         if len(username) >= 6 and len(password) >= 4:
