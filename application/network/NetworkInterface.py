@@ -1,2 +1,7 @@
+from application.lang.Singleton import Singleton
+
+
+@Singleton
 class NetworkInterface():
-    print "Sieg Heil!"
+    def __init__(self):
+        print "Sieg Heil!"
