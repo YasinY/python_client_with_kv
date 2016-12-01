@@ -85,12 +85,18 @@
 <Chat>
     dataMemberList: "Bennet, Yasin, Lasse"
     dataChatHistory: "Test"
-    AnchorLayout:
-        anchor_x: 'right' # WHY DOESNT THIS SHIT CENTJPOIGEGKIPO=AHKO?PEGHROKPGEPOKEG
-        anchor_y: 'center'
-        size_hint: (1 - 0.39, 1)
-        Button:
-            text: "TEST"
+    Label:
+        id: participants
+        text: "Participants: " + root.dataMemberList
+        pos: root.center_x - 300, root.center_y - 20
+    Label:
+        id: chatHistory
+        text: root.dataChatHistory
+        multiline: True
+        pos: participants.pos[0], participants.pos[1] - 20
+        #TextInput:
+         #   id: input
+            # pos: chatHistory.pos[0], chatHistory.pos[1]
 
 
 

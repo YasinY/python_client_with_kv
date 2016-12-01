@@ -29,7 +29,7 @@ class ChatHandler(Screen):
             for widget in children:
                 chatContainer.remove_widget(widget)
         else:
-            chatContainer.add_widget(Chat(chatHistory="HEIL HITLER", memberList="Bennet, Yasin, Lasse"))
+            chatContainer.add_widget(Chat(dataChatHistory="HEIL HITLER", dataMemberList="Bennet, Yasin, Lasse"))
 
     def switchChat(self, roomId):
         chatContainer = self.ids.chatContainer;
