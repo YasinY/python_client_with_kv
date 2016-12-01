@@ -26,8 +26,12 @@ class NetworkInterface:
         self.m_packetHandlers = {
             0: self.handleHelloResponse,
             1: self.handleLoginResponse,
-            2: self.handleRoomAdd
+            2: self.handleRoomAdd,
+            3: self.handleRoomMessage
         }
+
+    def handleRoomMessage(self, data):
+
 
     def handleRoomAdd(self, data):
         (roomid, roomtype, usercount, roomname) = netstruct.unpack("b$iib$", data)
