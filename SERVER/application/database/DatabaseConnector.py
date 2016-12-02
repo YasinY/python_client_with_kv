@@ -9,3 +9,8 @@ class DatabaseConnector:
         print "Connected"
         return
 
+    def executeQuery(self, query):
+        return self.m_db.execute(query)
+
+    def getConnector(self):
+        return self.m_db
