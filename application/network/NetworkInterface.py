@@ -37,6 +37,8 @@ class NetworkInterface:
         (bRoomID), restData = netstruct.iter_unpack("b$", data)
         roomID = bRoomID[0]
         RoomManager.Instance().getRoomByID(roomID).callbackRoomMessage(restData)
+        (messageID, ownerID, content) = netstruct.unpack("b$b$b$", data)
+        RoomManager.Instance().notifyRoomsAboutUpdate(roomID, ownerID, messageID, content)
         return
 
     def handleRoomAdd(self, data):

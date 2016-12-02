@@ -22,13 +22,13 @@ class ChatHandler(Screen):
         self.ids.chatsContainer.add_widget(ChatFrame(dataName=chatName, dataID=chatId, dataUserCount=chatUsers))
 
     def chatUpdateCallback(self, roomID, ownerID, messageID, messageContent):
+        print "!!!!!!!!! Update Callback"
         chatContainer = self.ids.chatContainer
         children = self.ids.chatContainer.children
         if len(children) >= 1:
             for widget in children:
                 chatContainer.remove_widget(widget)
-        else:
-            chatContainer.add_widget(self.getRoomProperties(roomID))
+                chatContainer.add_widget(self.getRoomProperties(roomID))
         return
 
     def switchChat(self, roomId):
