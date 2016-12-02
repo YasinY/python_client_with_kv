@@ -122,22 +122,27 @@ class RemoteClient:
 
     def listenLoop(self):
         while True:
-            data = self.m_clientSocket.recv(1024 * 16)  # 16KB Buffer
-            if len(data) == 0:
-                print "Client Disconnected"
-                return
+            try:
 
-            if self.m_encryptionEnabled:
-                print "Encrypted Packet"
-                decData = self.m_encryptionModule.decryptData(data)
-                (packetID,), restData = netstruct.iter_unpack("i", decData)
-                print "PacketID: " + str(packetID)
-                self.m_packetHandlers.get(packetID)(restData)
-            else:
-                print "Uncrypted Packet"
-                (packetID,), restData = netstruct.iter_unpack("i", data)
-                print "PacketID: " + str(packetID)
-                self.m_packetHandlers.get(packetID)(restData)
+                data = self.m_clientSocket.recv(1024 * 16)  # 16KB Buffer
+                if len(data) == 0:
+                    print "Client Disconnected"
+                    return
+
+                if self.m_encryptionEnabled:
+                    print "Encrypted Packet"
+                    decData = self.m_encryptionModule.decryptData(data)
+                    (packetID,), restData = netstruct.iter_unpack("i", decData)
+                    print "PacketID: " + str(packetID)
+                    self.m_packetHandlers.get(packetID)(restData)
+                else:
+                    print "Uncrypted Packet"
+                    (packetID,), restData = netstruct.iter_unpack("i", data)
+                    print "PacketID: " + str(packetID)
+                    self.m_packetHandlers.get(packetID)(restData)
+            except Exception:
+                print "Disconnected due to Error in Handling"
+                return
 
     def sendPacket(self, packetID, data):
         packetData = netstruct.pack("i", packetID)
