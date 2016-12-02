@@ -7,3 +7,6 @@ class Message:
 
     def getMessageID(self):
         return self.m_messageID
+
+    def getMessage(self):
+        return self.m_messageContent

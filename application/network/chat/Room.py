@@ -9,6 +9,9 @@ class Room:
         self.userCount = userCount
         return
 
+    def getRoomHistory(self):
+        return self.m_chatHistory
+
     def getRoomID(self):
         return self.m_roomID
 
@@ -21,5 +24,6 @@ class Room:
     def callbackRoomMessage(self, data):
         print "Got Room MSG Callback"
         (messageID, ownerID, content) = netstruct.unpack("b$b$b$", data)
+        print "MessageID: " + messageID + " OwnerID: " + ownerID + " Content: " + content
         self.m_chatHistory.appendMessage(messageID, ownerID, content)
         return

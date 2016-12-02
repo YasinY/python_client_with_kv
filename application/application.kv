@@ -4,12 +4,12 @@
 #:import ChatFrame application.screen.impl.chat.impl.ChatFrame
 #Declares parent properties
 #Screenmanager
-<Widget>:
-    canvas.after:
-        Line:
-            rectangle: self.x+1,self.y+1,self.width-1,self.height-1
-            dash_offset: 5
-            dash_length: 3
+#<Widget>:
+#    canvas.after:
+#        Line:
+#            rectangle: self.x+1,self.y+1,self.width-1,self.height-1
+#            dash_offset: 5
+#            dash_length: 3
 <ScreenManagement>
     LoginScreen:
     ChatHandler:
@@ -93,10 +93,13 @@
         id: chatHistory
         text: root.dataChatHistory
         multiline: True
-        pos: participants.pos[0], participants.pos[1] - 20
-        #TextInput:
-         #   id: input
-            # pos: chatHistory.pos[0], chatHistory.pos[1]
+        pos: participants.pos[0], participants.pos[1] - 120
+        TextInput:
+            id: input
+            multiline: False
+            pos: chatHistory.pos[0], chatHistory.pos[1]
+            on_text_validate: root.sendMessage(self)
+
 
 
 

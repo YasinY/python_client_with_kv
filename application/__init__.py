@@ -8,12 +8,12 @@ if __name__ == "__main__":
     Logger.Instance().log(0, "Init", "Loaded Logger")
     Logger.Instance().log(0, "Networking", "Connecting to Server")
     if NetworkInterface.Instance().connectToServer():
-        try:
+#        try:
             Logger.Instance().log(0, "Networking", "Connected, Running Main App")
             Application().run()
-            os._exit(0)
-        except KeyboardInterrupt:
-            print "Cleanup Needed!"
-            os._exit(0)
+#            os._exit(0)
+#        except KeyboardInterrupt:
+#            print "Cleanup Needed!"
+#            os._exit(0)
     else:
         Logger.Instance().log(3, "Networking", "Failed to Connect to the Server")

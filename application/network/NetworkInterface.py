@@ -93,6 +93,11 @@ class NetworkInterface:
         else:
             self.handleLoginError(statusResponse, restData)
 
+    def sendRoomMessage(self, room, message):
+        #RoomManager.Instace().getRoomByID(roomID)
+        data = netstruct.pack("b$b$", room.getRoomID(), message)
+        self.sendPacket(3, data)
+
     def login(self, username, password, callback):
         self.m_loginCallback = callback
         data = netstruct.pack("b$b$", username, password)

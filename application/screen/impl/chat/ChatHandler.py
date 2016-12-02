@@ -21,18 +21,20 @@ class ChatHandler(Screen):
     def appendChatFrame(self, chatName, chatId, chatUsers):
         self.ids.chatsContainer.add_widget(ChatFrame(dataName=chatName, dataID=chatId, dataUserCount=chatUsers))
 
-    # DUMMY DEF TODO REMOVE
-    def createExampleChat(self):
-        chatContainer = self.ids.chatContainer;
+    def chatUpdateCallback(self, roomID, ownerID, messageID, messageContent):
+        chatContainer = self.ids.chatContainer
         children = self.ids.chatContainer.children
-        if len(children) >= 1:  # If amount of childrens are 1 or above 1 (unlikely going to happen, but just in case so chats don't stack)
+        if len(children) >= 1:
             for widget in children:
                 chatContainer.remove_widget(widget)
         else:
-            chatContainer.add_widget(Chat(dataChatHistory="HEIL HITLER", dataMemberList="Bennet, Yasin, Lasse"))
+            chatContainer.add_widget(self.getRoomProperties(roomID))
+        return
 
     def switchChat(self, roomId):
-        chatContainer = self.ids.chatContainer;
+        RoomManager.Instance().setActiveRoom(roomId)
+        RoomManager.Instance().registerUpdateCallback(self.chatUpdateCallback)
+        chatContainer = self.ids.chatContainer
         children = self.ids.chatContainer.children
         if len(children) >= 1:  # If amount of childrens are 1 or above 1 (unlikely going to happen, but just in case so chats don't stack)
             for widget in children:
@@ -42,9 +44,10 @@ class ChatHandler(Screen):
 
     def getRoomProperties(self, id):
         # Do Request on server here, query with "id"
-        chatHistory = ["Bennet: Heil Hitler!", "Yasin: Heil den Fuehrer!", "Lasse: NEIN NEIN NEIN NEIN NEIN"]
-        memberList = ["Bennet der Judenschaender, Lasse der Schlaechter, Yasin der fuehrende Propagandavorstandssitzender"]
-        return Chat(dataChatHistory=self.iterateList(chatHistory), dataMemberList=self.iterateList(memberList))
+        currentRoom = RoomManager.Instance().getRoomByID(id)
+        roomHistory = currentRoom.getRoomHistory()
+        memberList = ["Bennet, Lasse, Yasin"]
+        return Chat(dataChatHistory=roomHistory.getDisplayHistory(), dataMemberList=self.iterateList(memberList))
         # Query by ID, return Chathistory, memberlist
 
     def iterateList(self, list):
