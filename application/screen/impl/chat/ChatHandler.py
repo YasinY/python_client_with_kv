@@ -9,7 +9,6 @@ from application.screen.impl.chat.impl.ChatFrame import ChatFrame
 
 # INTERFACE for CHATS (LEFT NODES) AND CHAT (RIGHT NODE)
 class ChatHandler(Screen):
-
     def roomAddCallback(self, roomID, roomType, userCount, roomName):
         self.appendChatFrame(roomName, roomID, userCount)
         RoomManager.Instance().addRoom(roomID, roomName, userCount)
@@ -36,18 +35,19 @@ class ChatHandler(Screen):
         RoomManager.Instance().registerUpdateCallback(self.chatUpdateCallback)
         chatContainer = self.ids.chatContainer
         children = self.ids.chatContainer.children
-        if len(children) >= 1:  # If amount of childrens are 1 or above 1 (unlikely going to happen, but just in case so chats don't stack)
-            for widget in children:
-                chatContainer.remove_widget(widget)
-        else:
-            chatContainer.add_widget(self.getRoomProperties(roomId))
+        roomWidget = self.getRoomProperties(roomId)
+        self.remove_widget(chatContainer)
+        self.add_widget(roomWidget)
 
     def getRoomProperties(self, id):
         # Do Request on server here, query with "id"
         currentRoom = RoomManager.Instance().getRoomByID(id)
         roomHistory = currentRoom.getRoomHistory()
-        memberList = ["Bennet, Lasse, Yasin"]
-        return Chat(dataChatHistory=roomHistory.getDisplayHistory(), dataMemberList=self.iterateList(memberList))
+        wholeHistory = roomHistory.getWholeHistory()
+        memberList = ["Bennet, Lasse, Yasin"]  # TODO do dis
+        return Chat(dataChatHistory=roomHistory.getDisplayHistory(),
+                    dataMemberList=self.iterateList(memberList),
+                    dataLastMessage=wholeHistory[-1:])  # Gets last message, if none found returns nothing
         # Query by ID, return Chathistory, memberlist
 
     def iterateList(self, list):

@@ -4,12 +4,6 @@
 #:import ChatFrame application.screen.impl.chat.impl.ChatFrame
 #Declares parent properties
 #Screenmanager
-#<Widget>:
-#    canvas.after:
-#        Line:
-#            rectangle: self.x+1,self.y+1,self.width-1,self.height-1
-#            dash_offset: 5
-#            dash_length: 3
 <ScreenManagement>
     LoginScreen:
     ChatHandler:
@@ -20,6 +14,9 @@
     name: "loginScreen"
     id: loginScreen
     AnchorLayout:
+        background_color: (1,0,0,0)
+        Image:
+            source: './images/background_sprite.png'
         TextInput:
             id: username
             text: "thebigben"
@@ -60,47 +57,89 @@
     BoxLayout:
         id: chatsContainer
         orientation: "vertical" # Top to bottom
-        size_hint: (0.39, 1) # Takes 0.3 of the screen
+        size_hint: (0.31, 1) # Takes 0.3 of the screen
     AnchorLayout:
         id: chatContainer
+        anchor_x: 'right'
+        anchor_y: 'top'
+        Image: # DEFAULT VALUE
+            source: "./images/default_chat_sprite.png"
+            size_hint: (0.69, 1)
+            allow_stretch: True
+            keep_ratio: False # I love this
+        Label:
+            text: "Hi! You managed to get to the chat screen. \n Start off by clicking on one of the chats aligned at the left!"
+            size_hint: (0.7, 1)
 <ChatFrame>
     name: "chatFrame"
     id: chatFrame
     dataID: None
     dataName: "title"
-    dataLastMsg: "---"
+    dataLastMessage: "---"
     dataUserCount: 0
     dataIsJoined: False
+    Image:
+        source: "./images/chatframe_sprite.png"
+        allow_stretch: True
+        keep_ratio: False # I love this
     BoxLayout:
+        id: chatFrameLayout
         orientation: "vertical"
         Label:
             text: "[ref=title]" + root.dataName + "[/ref]"
             markup: True
             on_ref_press: root.clickChatFrame(self, root.dataID, root.dataName)
-            size_hint: (1, 0.4) # Takes x,y of the (chatContainer.size_hint[x,y]) given
         Label:
-            size_hint: (1, 0.6)
-            text: root.dataLastMsg # Description here
+            text: root.dataLastMessage # Description here
             multiline: True
 <Chat>
     dataMemberList: "Bennet, Yasin, Lasse"
-    dataChatHistory: "Test"
-    Label:
-        id: participants
-        text: "Participants: " + root.dataMemberList
-        pos: root.center_x - 300, root.center_y - 20
-    Label:
-        id: chatHistory
-        text: root.dataChatHistory
-        multiline: True
-        pos: participants.pos[0], participants.pos[1] - 120
-        TextInput:
-            id: input
-            multiline: False
-            pos: chatHistory.pos[0], chatHistory.pos[1]
-            on_text_validate: root.sendMessage(self)
-
-
-
-
-# Chat UI here
+    dataChatHistory: "Test" # HUE
+    AnchorLayout:
+        #size_hint: (None, 1)
+        anchor_x: 'center'
+        anchor_y: 'top'
+        AnchorLayout:
+            anchor_x: 'right'
+            anchor_y: 'top'
+            Image:
+                source: "./images/participants_sprite.png"
+                size_hint: (participants.size_hint[0], participants.size_hint[1])
+                allow_stretch: True
+                keep_ratio: False # I love this
+            Label:
+                id: participants
+                text: "Participants: " + root.dataMemberList
+                #pos: 500, root.center_y
+                size_hint: (0.69, 0.1)
+            AnchorLayout:
+                anchor_x: 'right'
+                anchor_y: 'center'
+                Image:
+                    source: "./images/chat_sprite.png"
+                    size_hint: (0.69, chatHistory.size_hint[1])
+                    allow_stretch: True
+                    keep_ratio: False # I love this
+                Label:
+                    id: chatHistory
+                    text: root.dataChatHistory
+                    text_size: self.size
+                    halign: 'left'
+                    valign: 'middle'
+                    multiline: True
+                    # pos: participants.pos[0], participants.pos[1] - self.height
+                    size_hint: (0.6880, 0.8)
+            AnchorLayout:
+                anchor_x: 'right'
+                anchor_y: 'bottom'
+                Image:
+                    source: "./images/chat_input_sprite.png"
+                    size_hint: (input.size_hint[0], input.size_hint[1])
+                    allow_stretch: True
+                    keep_ratio: False # I love this
+                TextInput:
+                    id: input
+                    multiline: False
+                    # pos: chatHistory.pos[0], chatHistory.pos[1] - self.height - self.width
+                    size_hint: (0.69, 0.1)
+                    on_text_validate: root.sendMessage(self)
