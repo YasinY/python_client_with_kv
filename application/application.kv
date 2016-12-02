@@ -4,12 +4,6 @@
 #:import ChatFrame application.screen.impl.chat.impl.ChatFrame
 #Declares parent properties
 #Screenmanager
-<Widget>:
-    canvas.after:
-        Line:
-            rectangle: self.x+1,self.y+1,self.width-1,self.height-1
-            dash_offset: 5
-            dash_length: 3
 <ScreenManagement>
     LoginScreen:
     ChatHandler:
@@ -22,7 +16,7 @@
     AnchorLayout:
         background_color: (1,0,0,0)
         Image:
-            source: 'benya.png'
+            source: './images/background_sprite.png'
         TextInput:
             id: username
             text: "thebigben"
@@ -74,7 +68,12 @@
     dataLastMessage: "---"
     dataUserCount: 0
     dataIsJoined: False
+    Image:
+        source: "./images/chatframe_sprite.png"
+        allow_stretch: True
+        keep_ratio: False # I love this
     BoxLayout:
+        id: chatFrameLayout
         orientation: "vertical"
         Label:
             text: "[ref=title]" + root.dataName + "[/ref]"
@@ -93,6 +92,11 @@
         AnchorLayout:
             anchor_x: 'right'
             anchor_y: 'top'
+            Image:
+                source: "./images/participants_sprite.png"
+                size_hint: (participants.size_hint[0], participants.size_hint[1])
+                allow_stretch: True
+                keep_ratio: False # I love this
             Label:
                 id: participants
                 text: "Participants: " + root.dataMemberList
@@ -101,6 +105,11 @@
             AnchorLayout:
                 anchor_x: 'right'
                 anchor_y: 'center'
+                Image:
+                    source: "./images/chat_sprite.png"
+                    size_hint: (0.69, chatHistory.size_hint[1])
+                    allow_stretch: True
+                    keep_ratio: False # I love this
                 Label:
                     id: chatHistory
                     text: root.dataChatHistory
@@ -109,10 +118,15 @@
                     valign: 'middle'
                     multiline: True
                     # pos: participants.pos[0], participants.pos[1] - self.height
-                    size_hint: (0.69, 0.8)
+                    size_hint: (0.6880, 0.8)
             AnchorLayout:
                 anchor_x: 'right'
                 anchor_y: 'bottom'
+                Image:
+                    source: "./images/chat_input_sprite.png"
+                    size_hint: (input.size_hint[0], input.size_hint[1])
+                    allow_stretch: True
+                    keep_ratio: False # I love this
                 TextInput:
                     id: input
                     multiline: False
