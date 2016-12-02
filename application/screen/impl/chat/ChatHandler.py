@@ -35,11 +35,13 @@ class ChatHandler(Screen):
         RoomManager.Instance().registerUpdateCallback(self.chatUpdateCallback)
         chatContainer = self.ids.chatContainer
         children = self.ids.chatContainer.children
-        if len(children) >= 1:  # If amount of childrens are 1 or above 1 (unlikely going to happen, but just in case so chats don't stack)
+        roomWidget = self.getRoomProperties(roomId)
+        if len(children) >= 1:
             for widget in children:
                 chatContainer.remove_widget(widget)
+                chatContainer.add_widget(roomWidget)
         else:
-            chatContainer.add_widget(self.getRoomProperties(roomId))
+            chatContainer.add_widget(roomWidget)
 
     def getRoomProperties(self, id):
         # Do Request on server here, query with "id"
