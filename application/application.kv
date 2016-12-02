@@ -4,12 +4,12 @@
 #:import ChatFrame application.screen.impl.chat.impl.ChatFrame
 #Declares parent properties
 #Screenmanager
-#<Widget>:
-#    canvas.after:
-#        Line:
-#            rectangle: self.x+1,self.y+1,self.width-1,self.height-1
-#            dash_offset: 5
-#            dash_length: 3
+<Widget>:
+    canvas.after:
+        Line:
+            rectangle: self.x+1,self.y+1,self.width-1,self.height-1
+            dash_offset: 5
+            dash_length: 3
 <ScreenManagement>
     LoginScreen:
     ChatHandler:
@@ -60,15 +60,15 @@
     BoxLayout:
         id: chatsContainer
         orientation: "vertical" # Top to bottom
-        size_hint: (0.39, 1) # Takes 0.3 of the screen
-    AnchorLayout:
+        size_hint: (0.31, 1) # Takes 0.3 of the screen
+    BoxLayout:
         id: chatContainer
 <ChatFrame>
     name: "chatFrame"
     id: chatFrame
     dataID: None
     dataName: "title"
-    dataLastMsg: "---"
+    dataLastMessage: "---"
     dataUserCount: 0
     dataIsJoined: False
     BoxLayout:
@@ -77,30 +77,41 @@
             text: "[ref=title]" + root.dataName + "[/ref]"
             markup: True
             on_ref_press: root.clickChatFrame(self, root.dataID, root.dataName)
-            size_hint: (1, 0.4) # Takes x,y of the (chatContainer.size_hint[x,y]) given
         Label:
-            size_hint: (1, 0.6)
-            text: root.dataLastMsg # Description here
+            text: root.dataLastMessage # Description here
             multiline: True
 <Chat>
     dataMemberList: "Bennet, Yasin, Lasse"
     dataChatHistory: "Test"
-    Label:
-        id: participants
-        text: "Participants: " + root.dataMemberList
-        pos: root.center_x - 300, root.center_y - 20
-    Label:
-        id: chatHistory
-        text: root.dataChatHistory
-        multiline: True
-        pos: participants.pos[0], participants.pos[1] - 120
-        TextInput:
-            id: input
-            multiline: False
-            pos: chatHistory.pos[0], chatHistory.pos[1]
-            on_text_validate: root.sendMessage(self)
-
-
-
-
-# Chat UI here
+    AnchorLayout:
+        #size_hint: (None, 1)
+        anchor_x: 'center'
+        anchor_y: 'top'
+        AnchorLayout:
+            anchor_x: 'right'
+            anchor_y: 'top'
+            Label:
+                id: participants
+                text: "Participants: " + root.dataMemberList
+                #pos: 500, root.center_y
+                size_hint: (0.69, 0.1)
+            AnchorLayout:
+                anchor_x: 'right'
+                anchor_y: 'center'
+                Label:
+                    id: chatHistory
+                    text: root.dataChatHistory
+                    halign: 'left'
+                    valign: 'middle'
+                    multiline: True
+                    # pos: participants.pos[0], participants.pos[1] - self.height
+                    size_hint: (0.69, 0.8)
+            AnchorLayout:
+                anchor_x: 'right'
+                anchor_y: 'bottom'
+                TextInput:
+                    id: input
+                    multiline: False
+                    # pos: chatHistory.pos[0], chatHistory.pos[1] - self.height - self.width
+                    size_hint: (0.69, 0.1)
+                    on_text_validate: root.sendMessage(self)

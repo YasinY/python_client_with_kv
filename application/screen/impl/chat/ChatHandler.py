@@ -9,7 +9,6 @@ from application.screen.impl.chat.impl.ChatFrame import ChatFrame
 
 # INTERFACE for CHATS (LEFT NODES) AND CHAT (RIGHT NODE)
 class ChatHandler(Screen):
-
     def roomAddCallback(self, roomID, roomType, userCount, roomName):
         self.appendChatFrame(roomName, roomID, userCount)
         RoomManager.Instance().addRoom(roomID, roomName, userCount)
@@ -46,8 +45,11 @@ class ChatHandler(Screen):
         # Do Request on server here, query with "id"
         currentRoom = RoomManager.Instance().getRoomByID(id)
         roomHistory = currentRoom.getRoomHistory()
-        memberList = ["Bennet, Lasse, Yasin"]
-        return Chat(dataChatHistory=roomHistory.getDisplayHistory(), dataMemberList=self.iterateList(memberList))
+        wholeHistory = roomHistory.getWholeHistory()
+        memberList = ["Bennet, Lasse, Yasin"]  # TODO do dis
+        return Chat(dataChatHistory=roomHistory.getDisplayHistory(),
+                    dataMemberList=self.iterateList(memberList),
+                    dataLastMessage=wholeHistory[-1:])  # Gets last message, if none found returns nothing
         # Query by ID, return Chathistory, memberlist
 
     def iterateList(self, list):
