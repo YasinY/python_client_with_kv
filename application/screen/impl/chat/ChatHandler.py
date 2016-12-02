@@ -36,12 +36,8 @@ class ChatHandler(Screen):
         chatContainer = self.ids.chatContainer
         children = self.ids.chatContainer.children
         roomWidget = self.getRoomProperties(roomId)
-        if len(children) >= 1:
-            for widget in children:
-                chatContainer.remove_widget(widget)
-                chatContainer.add_widget(roomWidget)
-        else:
-            chatContainer.add_widget(roomWidget)
+        self.remove_widget(chatContainer)
+        self.add_widget(roomWidget)
 
     def getRoomProperties(self, id):
         # Do Request on server here, query with "id"
