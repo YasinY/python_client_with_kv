@@ -112,6 +112,7 @@ class RemoteClient:
             if userIsBanned != 0:
                 errorCode = 2
                 errorReason = "Banned: " + str(banReason)
+                print "User is Banned!"
         else:
             print "Login is Invalid"
             errorCode = 1

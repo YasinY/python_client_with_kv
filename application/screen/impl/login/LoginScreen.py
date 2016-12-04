@@ -1,5 +1,5 @@
 from kivy.uix.screenmanager import Screen
-
+import netstruct
 from application.network.NetworkInterface import NetworkInterface
 
 
@@ -13,6 +13,12 @@ class LoginScreen(Screen):
         if status:
             self.switch()
         else:
+            (errorCode, errorReason) = netstruct.unpack("ib$", data)
+            errorReasons = {
+                1: "Login: ",
+                2: "User: "
+            }
+            self.dataErrorText = errorReasons.get(errorCode) + errorReason
             print "Error"
 
     def login(self, username, password):  # DO LOGIN HERE

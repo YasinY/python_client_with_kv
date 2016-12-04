@@ -91,9 +91,9 @@ class NetworkInterface:
         print "Got Login Response"
         (statusResponse,), restData = netstruct.iter_unpack("i", data)
         if statusResponse == 0:
-            self.handleLoginOkay(restData)
+            self.handleLoginOkay(data)
         else:
-            self.handleLoginError(statusResponse, restData)
+            self.handleLoginError(statusResponse, data)
 
     def sendRoomMessage(self, room, message):
         #RoomManager.Instace().getRoomByID(roomID)
