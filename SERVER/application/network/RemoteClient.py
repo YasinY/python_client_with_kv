@@ -145,13 +145,17 @@ class RemoteClient:
                 return
 
     def sendPacket(self, packetID, data):
-        packetData = netstruct.pack("i", packetID)
-        packetData += data
-        if self.m_encryptionEnabled:
-            encData = self.m_encryptionModule.encryptData(packetData)
-            self.m_clientSocket.send(encData)
-        else:
-            self.m_clientSocket.send(packetData)
+        try:
+            packetData = netstruct.pack("i", packetID)
+            packetData += data
+            if self.m_encryptionEnabled:
+                encData = self.m_encryptionModule.encryptData(packetData)
+                self.m_clientSocket.send(encData)
+            else:
+                self.m_clientSocket.send(packetData)
+        except Exception:
+            print "Send Packet Failed"
+            return
 
     def sendHelloPacket(self):
         self.sendPacket(0, str(self.m_DHShared))
