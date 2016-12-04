@@ -59,6 +59,7 @@
             text: "Register"
             size_hint: (password.size_hint_x / 2, 0.05)
             pos: login.pos[0] + self.width, login.pos[1]
+            on_press: root.register(username.text, password.text)
 <ChatHandler>
     name: "chatHandler"
     id: chatHandler

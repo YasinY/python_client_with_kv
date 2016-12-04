@@ -20,4 +20,7 @@ class Room:
             client.broadcastMessage(message)
 
     def removeUser(self, user):
-        self.m_members.remove(user)
+        try:
+            self.m_members.remove(user)
+        except ValueError:
+            return

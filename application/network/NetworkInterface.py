@@ -105,6 +105,11 @@ class NetworkInterface:
         data = netstruct.pack("b$b$", username, password)
         self.sendPacket(4, data)
 
+    def register(self, username, password, callback):
+        self.m_loginCallback = callback
+        data = netstruct.pack("b$b$", username, password)
+        self.sendPacket(7, data)
+
     def joinRoom(self, roomid, password, callback):
         data = netstruct.pack("b$b$", roomid, password)
         self.sendPacket(6, data)

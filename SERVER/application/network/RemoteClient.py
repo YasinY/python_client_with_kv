@@ -30,7 +30,8 @@ class RemoteClient:
             3: self.handleRoomMessage,
             4: self.handleLogin,
             5: self.handleRoomListRequest,
-            6: self.handleJoinRoomRequest
+            6: self.handleJoinRoomRequest,
+            7: self.handleRegister
         }
 
         self.sendHelloPacket()  # Initiate Key Exchange
@@ -55,7 +56,6 @@ class RemoteClient:
         msgData = netstruct.pack("b$b$b$b$", message.getRoomID(), message.getMessageID(), message.getOwnerID(), message.getMessage())
         self.sendPacket(3, msgData)
         return
-
 
     def handleRoomListRequest(self, data):
         print "Got Room List Request"
@@ -84,6 +84,32 @@ class RemoteClient:
         print "Server: Enabling Encryption Layer"
         return
 
+    def handleRegister(self, data):
+        (dUsername, dPassword) = netstruct.unpack("b$b$", data)
+        username = str(dUsername)
+        password = str(dPassword)
+
+        print "Login:", username
+        print "Passwort:", password
+
+        userExists = False
+
+        for userrow in DatabaseConnector.Instance().getConnector().execute("SELECT * FROM chat_users WHERE username=?",
+                                                                           (username.lower(),)):
+            userExists = True
+
+        if userExists:
+            responseData = netstruct.pack("ib$", 3, "Username already Exists")
+            self.sendPacket(3, responseData)
+            return
+
+        pwhash = bcrypt.hashpw(password, bcrypt.gensalt())
+        DatabaseConnector.Instance().getConnector().execute("INSERT INTO chat_users (id, username, password, ismod, isadmin, lastlogin, lastip, banned, banreason, banliftdate) VALUES(NULL, ?, ?, 0, 0, NULL, '0.0.0.0', 0, '', 0) ", (username.lower(), pwhash, ))
+        DatabaseConnector.Instance().writeDB()
+        self.m_clientNick = username
+        responseData = netstruct.pack("ib$", 0, "")
+        self.sendPacket(1, responseData)
+
     def handleLogin(self, data):
         (dUsername, dPassword) = netstruct.unpack("b$b$", data)
         username = str(dUsername)
@@ -100,7 +126,8 @@ class RemoteClient:
         banReason = ""
         banLift = -1
 
-        for userrow in DatabaseConnector.Instance().getConnector().execute("SELECT * FROM chat_users WHERE username=?", (username,)):
+        for userrow in DatabaseConnector.Instance().getConnector().execute("SELECT * FROM chat_users WHERE username=?",
+                                                                           (username.lower(),)):
             if bcrypt.checkpw(password.encode('utf-8'), userrow[2].encode('utf-8')):
                 loginValid = True
                 userIsBanned = userrow[7]

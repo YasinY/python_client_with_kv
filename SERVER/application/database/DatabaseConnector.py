@@ -14,3 +14,6 @@ class DatabaseConnector:
 
     def getConnector(self):
         return self.m_db
+
+    def writeDB(self):
+        self.m_db.commit()

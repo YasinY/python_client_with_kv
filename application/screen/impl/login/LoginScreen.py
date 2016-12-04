@@ -16,15 +16,23 @@ class LoginScreen(Screen):
             (errorCode, errorReason) = netstruct.unpack("ib$", data)
             errorReasons = {
                 1: "Login: ",
-                2: "User: "
+                2: "User: ",
+                3: "Register: "
             }
             self.dataErrorText = errorReasons.get(errorCode) + errorReason
             print "Error"
 
-    def login(self, username, password):  # DO LOGIN HERE
-        print "Logging in: " + username + " password " + password
+    def register(self, username, password):
+        print "Regging: " + username + " password ****"
         if not self.canLogin(username, password):
-            print "Insufficient credentials"
+            self.dataErrorText = "Insufficient credentials"
+        else:
+            NetworkInterface.Instance().register(username, password, self.loginCallback)
+
+    def login(self, username, password):  # DO LOGIN HERE
+        print "Logging in: " + username + " password ****"
+        if not self.canLogin(username, password):
+            self.dataErrorText = "Insufficient credentials"
         else:
             NetworkInterface.Instance().login(username, password, self.loginCallback)
 
