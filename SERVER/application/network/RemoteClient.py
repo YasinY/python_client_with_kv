@@ -100,7 +100,7 @@ class RemoteClient:
 
         if userExists:
             responseData = netstruct.pack("ib$", 3, "Username already Exists")
-            self.sendPacket(3, responseData)
+            self.sendPacket(1, responseData)
             return
 
         pwhash = bcrypt.hashpw(password, bcrypt.gensalt())
