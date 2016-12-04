@@ -20,7 +20,7 @@ class ChatHistory:
     def getDisplayHistory(self):
         historyReturn = "---Start of History---" + os.linesep
         for msg in self.m_history:
-            historyReturn += msg.getMessage() + os.linesep
+            historyReturn += "<" + msg.getDisplayTimeStamp() + "> [" + msg.getOwnerID() + "]: " + msg.getMessage() + os.linesep
         return historyReturn
 
     def getRoomID(self):

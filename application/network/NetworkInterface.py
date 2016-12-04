@@ -1,6 +1,6 @@
 from application.lang.Singleton import Singleton
 from application.network.encryption.DiffieHellman import DiffieHellman
-from application.network.encryption.EncyptionModule import EncryptionModule
+from application.network.encryption.EncryptionModule import EncryptionModule
 from application.manager.RoomManager import RoomManager
 from application import Config
 import socket
@@ -50,7 +50,7 @@ class NetworkInterface:
         print "Name: " + roomname
 
     def requestRoomList(self, roomAddCallback):
-        self.m_roomAddCallback = roomAddCallback;
+        self.m_roomAddCallback = roomAddCallback
         self.sendPacket(5, "")
 
     def sendPacket(self, packetID, data):

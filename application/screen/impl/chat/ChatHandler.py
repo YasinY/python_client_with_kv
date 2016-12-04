@@ -27,28 +27,29 @@ class ChatHandler(Screen):
         if len(children) >= 1:
             for widget in children:
                 chatContainer.remove_widget(widget)
-                chatContainer.add_widget(self.getRoomProperties(roomID))
-        return
+
+        chatContainer.add_widget(self.getRoomProperties(roomID))
 
     def switchChat(self, roomId):
         RoomManager.Instance().setActiveRoom(roomId)
         RoomManager.Instance().registerUpdateCallback(self.chatUpdateCallback)
         chatContainer = self.ids.chatContainer
         children = self.ids.chatContainer.children
-        roomWidget = self.getRoomProperties(roomId)
-        self.remove_widget(chatContainer)
-        self.add_widget(roomWidget)
+        if len(children) >= 1:
+            for widget in children:
+                chatContainer.remove_widget(widget)
+
+        chatContainer.add_widget(self.getRoomProperties(roomId))
 
     def getRoomProperties(self, id):
         # Do Request on server here, query with "id"
         currentRoom = RoomManager.Instance().getRoomByID(id)
         roomHistory = currentRoom.getRoomHistory()
         wholeHistory = roomHistory.getWholeHistory()
-        memberList = ["Bennet, Lasse, Yasin"]  # TODO do dis
+        memberList = ["Work, In, Progress"]  # TODO do dis
         return Chat(dataChatHistory=roomHistory.getDisplayHistory(),
                     dataMemberList=self.iterateList(memberList),
-                    dataLastMessage=wholeHistory[-1:])  # Gets last message, if none found returns nothing
-        # Query by ID, return Chathistory, memberlist
+                    dataLastMessage=wholeHistory[-1:])
 
     def iterateList(self, list):
         return "".join(str(prefix) for prefix in list)
