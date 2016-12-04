@@ -117,6 +117,7 @@ class RemoteClient:
             errorCode = 1
             errorReason = "Username/Password Invalid"
 
+        self.m_clientNick = username
         responseData = netstruct.pack("ib$", errorCode, errorReason)
         self.sendPacket(1, responseData)
 
@@ -141,6 +142,7 @@ class RemoteClient:
                     print "PacketID: " + str(packetID)
                     self.m_packetHandlers.get(packetID)(restData)
             except Exception:
+                RoomManager.Instance().removeUserFromAllRooms(self)
                 print "Disconnected due to Error in Handling"
                 return
 
@@ -154,6 +156,7 @@ class RemoteClient:
             else:
                 self.m_clientSocket.send(packetData)
         except Exception:
+            RoomManager.Instance().removeUserFromAllRooms(self)
             print "Send Packet Failed"
             return
 

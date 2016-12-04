@@ -22,3 +22,7 @@ class RoomManager:
         for room in self.m_rooms:
             if room.getRoomID() == roomID:
                 return room
+
+    def removeUserFromAllRooms(self, user):
+        for room in self.getAllRooms():
+            room.removeUser(user)

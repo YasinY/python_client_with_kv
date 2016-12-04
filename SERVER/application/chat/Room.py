@@ -18,3 +18,6 @@ class Room:
     def broadcastRoomMessage(self, message):
         for client in self.m_members:
             client.broadcastMessage(message)
+
+    def removeUser(self, user):
+        self.m_members.remove(user)
