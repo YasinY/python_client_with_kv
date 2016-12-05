@@ -84,7 +84,7 @@
             keep_ratio: False # I love this
         Label:
             text: "Hi! You managed to get to the chat screen. \n Start off by clicking on one of the chats aligned at the left!"
-            size_hint: (0.7, 1)
+            size_hint: (0.69, 1)
 <ChatFrame>
     name: "chatFrame"
     id: chatFrame
@@ -117,6 +117,7 @@
         AnchorLayout:
             anchor_x: 'right'
             anchor_y: 'top'
+            # PARTICIPANTS
             Image:
                 source: "./images/participants_sprite.png"
                 size_hint: (participants.size_hint[0], participants.size_hint[1])
@@ -127,6 +128,8 @@
                 text: "Participants: " + root.dataMemberList
                 #pos: 500, root.center_y
                 size_hint: (0.69, 0.1)
+            # PARTICIPANTS END
+            # CHATHISTORY
             AnchorLayout:
                 anchor_x: 'right'
                 anchor_y: 'center'
@@ -143,7 +146,9 @@
                     valign: 'middle'
                     multiline: True
                     # pos: participants.pos[0], participants.pos[1] - self.height
-                    size_hint: (0.680, 0.8)
+                    size_hint: (0.69, 0.8)
+            # CHATHISTORY END
+            # INPUT
             AnchorLayout:
                 anchor_x: 'right'
                 anchor_y: 'bottom'
@@ -158,3 +163,4 @@
                     # pos: chatHistory.pos[0], chatHistory.pos[1] - self.height - self.width
                     size_hint: (0.69, 0.1)
                     on_text_validate: root.sendMessage(self)
+              # INPUT END

@@ -25,7 +25,7 @@ class LoginScreen(Screen):
             print "Error"
 
     def register(self, username, password):
-        print "Regging: " + username + " password ****"
+        print "Regging: " + username
         if not self.canLogin(username, password):
             self.dataErrorText = "Insufficient credentials"
         else:
