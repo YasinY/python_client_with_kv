@@ -4,10 +4,13 @@ from application.network.encryption.EncryptionModule import EncryptionModule
 from application.database.DatabaseConnector import DatabaseConnector
 from application.manager.RoomManager import RoomManager
 from application.network.ChatMessage import ChatMessage
+from application import Config as Config
 import netstruct
 import hashlib
 import bcrypt
 from construct import *
+import re as re
+import time
 
 class RemoteClient:
     def __init__(self, socketConnection):
@@ -48,10 +51,14 @@ class RemoteClient:
     def handleRoomMessage(self, data):
         (roomid, ), restData = netstruct.iter_unpack("b$", data)
 
-        messageData = self.m_lengthdString.parse(restData)
+        messageData = self.m_lengthdString.parse(restData).data
+
+        for badWord in Config.BAD_WORDS:
+            pattern = re.compile(badWord, re.IGNORECASE)
+            messageData = pattern.sub("*****", messageData)
 
         room = RoomManager.Instance().getRoomByID(roomid)
-        room.broadcastRoomMessage(ChatMessage(self, roomid, messageData.data))
+        room.broadcastRoomMessage(ChatMessage(self, roomid, messageData))
 
     def handleJoinRoomRequest(self, data):
         (roomid, password) = netstruct.unpack("b$b$", data)
@@ -163,7 +170,6 @@ class RemoteClient:
     def listenLoop(self):
         while True:
             try:
-
                 data = self.m_clientSocket.recv(1024 * 16)  # 16KB Buffer
                 if len(data) == 0:
                     print "Client Disconnected"
@@ -198,6 +204,7 @@ class RemoteClient:
             RoomManager.Instance().removeUserFromAllRooms(self)
             print "Send Packet Failed"
             return
+        time.sleep(0.05)
 
     def sendHelloPacket(self):
         self.sendPacket(0, str(self.m_DHShared))
