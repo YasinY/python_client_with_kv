@@ -1,10 +1,8 @@
-import os
-
-import time
 from kivy.uix.image import Image
 from kivy.uix.screenmanager import Screen
-from application.network.NetworkInterface import NetworkInterface
+
 from application.manager.RoomManager import RoomManager
+from application.network.NetworkInterface import NetworkInterface
 from application.screen.impl.chat.impl.Chat import Chat
 from application.screen.impl.chat.impl.ChatFrame import ChatFrame
 
@@ -12,7 +10,6 @@ from application.screen.impl.chat.impl.ChatFrame import ChatFrame
 # INTERFACE for CHATS (LEFT NODES) AND CHAT (RIGHT NODE)
 class ChatHandler(Screen):
     def roomAddCallback(self, roomID, roomType, userCount, roomName):
-        time.sleep(0.2)
         self.appendChatFrame(roomName, roomID, userCount)
         RoomManager.Instance().addRoom(roomID, roomName, userCount)
 
@@ -24,7 +21,6 @@ class ChatHandler(Screen):
         self.ids.chatsContainer.add_widget(ChatFrame(dataName=chatName, dataID=chatId, dataUserCount=chatUsers))
 
     def chatUpdateCallback(self, roomID, ownerID, messageID, messageContent):
-        print "!!!!!!!!! Update Callback"
         chatContainer = self.ids.chatContainer
         children = self.ids.chatContainer.children
         if len(children) >= 1:
