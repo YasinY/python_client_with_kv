@@ -21,7 +21,6 @@
     id: loginScreen
     dataErrorText: ""
     AnchorLayout:
-        background_color: (1,0,0,0)
         Image:
             source: './images/background_sprite.png'
         TextInput:
@@ -51,6 +50,7 @@
         TextInput:
             id: password
             password: True
+            multiline: False
             size_hint: (0.25, 0.05)
             pos: username.pos[0], username.pos[1] - self.height
             write_tab: False
