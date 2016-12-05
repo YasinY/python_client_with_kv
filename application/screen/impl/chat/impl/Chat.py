@@ -8,7 +8,6 @@ class Chat(Screen):
     def sendMessage(self, textInput):
         messageText = textInput.text
         print "Text: " + messageText
+        textInput.insert_text("test")
         NetworkInterface.Instance().sendRoomMessage(RoomManager.Instance().getActiveRoom(), messageText)
-        textInput.text = ""
-        textInput.focus = True
         return

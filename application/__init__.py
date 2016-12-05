@@ -1,7 +1,6 @@
 from application.Application import Application
 from application.network.NetworkInterface import NetworkInterface
 from application.util.Logger import Logger
-import os
 
 if __name__ == "__main__":
     Logger.Instance().setLogToConsole(True)
