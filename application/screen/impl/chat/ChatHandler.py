@@ -1,5 +1,6 @@
 import os
 
+from kivy.uix.image import Image
 from kivy.uix.screenmanager import Screen
 from application.network.NetworkInterface import NetworkInterface
 from application.manager.RoomManager import RoomManager
@@ -26,6 +27,8 @@ class ChatHandler(Screen):
         children = self.ids.chatContainer.children
         if len(children) >= 1:
             for widget in children:
+                if isinstance(widget, Image):
+                    return
                 chatContainer.remove_widget(widget)
 
         chatContainer.add_widget(self.getRoomProperties(roomID))

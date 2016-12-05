@@ -4,6 +4,12 @@
 #:import ChatFrame application.screen.impl.chat.impl.ChatFrame
 #Declares parent properties
 #Screenmanager
+<Widget>:
+    canvas.after:
+        Line:
+            rectangle: self.x+1,self.y+1,self.width-1,self.height-1
+            dash_offset: 5
+            dash_length: 3
 <ScreenManagement>
     LoginScreen:
     ChatHandler:
@@ -20,7 +26,7 @@
             source: './images/background_sprite.png'
         TextInput:
             id: username
-            text: "thebigben"
+            multiline: False
             pos: root.center_x - self.width / 2, root.center_y
             size_hint: (0.25, 0.05)
             write_tab: False
@@ -32,10 +38,11 @@
         Label:
             font_size: 18
             text: "Password"
+            multiline: False
             pos: password.pos[0] - password.width / 4, password.pos[1] + (password.height / 2) - self.height
             size_hint: (0, 0)
         Label:
-            id: "errorlabel"
+            id: errorLabel
             font_size: 18
             text: root.dataErrorText
             pos: root.center_x - self.width / 2, username.pos[1] + (username.height / 2) - self.height - 100
@@ -43,7 +50,6 @@
             color: (1, 0, 0, 1)
         TextInput:
             id: password
-            text: "qwertz"
             password: True
             size_hint: (0.25, 0.05)
             pos: username.pos[0], username.pos[1] - self.height
@@ -66,7 +72,7 @@
     BoxLayout:
         id: chatsContainer
         orientation: "vertical" # Top to bottom
-        size_hint: (0.31, 1) # Takes 0.3 of the screen
+        size_hint: (0.31, 1) # Takes 0.3 of the screen, left chat frame
     AnchorLayout:
         id: chatContainer
         anchor_x: 'right'
@@ -137,7 +143,7 @@
                     valign: 'middle'
                     multiline: True
                     # pos: participants.pos[0], participants.pos[1] - self.height
-                    size_hint: (0.6880, 0.8)
+                    size_hint: (0.680, 0.8)
             AnchorLayout:
                 anchor_x: 'right'
                 anchor_y: 'bottom'

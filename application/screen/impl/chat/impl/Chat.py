@@ -13,4 +13,5 @@ class Chat(Screen):
             return
         NetworkInterface.Instance().sendRoomMessage(RoomManager.Instance().getActiveRoom(), messageText)
         textInput.text = ""
+        textInput.focus = True
         return

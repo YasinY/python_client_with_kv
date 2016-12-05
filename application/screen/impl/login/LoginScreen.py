@@ -1,3 +1,5 @@
+import os
+
 from kivy.uix.screenmanager import Screen
 import netstruct
 from application.network.NetworkInterface import NetworkInterface
@@ -34,6 +36,7 @@ class LoginScreen(Screen):
         if not self.canLogin(username, password):
             self.dataErrorText = "Insufficient credentials"
         else:
+            self.dataErrorText = "Logging in.." + os.linesep + "If this takes too long, the server may be having a rough time." + os.linesep + "Please try again later."
             NetworkInterface.Instance().login(username, password, self.loginCallback)
 
     def canLogin(self, username, password):
