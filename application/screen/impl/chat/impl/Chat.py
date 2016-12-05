@@ -6,8 +6,11 @@ class Chat(Screen):
     pass
 
     def sendMessage(self, textInput):
-        print "Text: " + textInput.text
         messageText = textInput.text
+        print "Text: " + messageText
+        if len(messageText) > 120:
+            print "Message is too long"
+            return
         NetworkInterface.Instance().sendRoomMessage(RoomManager.Instance().getActiveRoom(), messageText)
         textInput.text = ""
         return

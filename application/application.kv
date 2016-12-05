@@ -16,8 +16,8 @@
     dataErrorText: ""
     AnchorLayout:
         background_color: (1,0,0,0)
-#        Image:
-#            source: './images/background_sprite.png'
+        Image:
+            source: './images/background_sprite.png'
         TextInput:
             id: username
             text: "thebigben"
@@ -71,11 +71,11 @@
         id: chatContainer
         anchor_x: 'right'
         anchor_y: 'top'
-#        Image:
-#            source: "./images/default_chat_sprite.png"
-#            size_hint: (0.69, 1)
-#            allow_stretch: True
-#            keep_ratio: False # I love this
+        Image:
+            source: "./images/default_chat_sprite.png"
+            size_hint: (0.69, 1)
+            allow_stretch: True
+            keep_ratio: False # I love this
         Label:
             text: "Hi! You managed to get to the chat screen. \n Start off by clicking on one of the chats aligned at the left!"
             size_hint: (0.7, 1)
@@ -87,10 +87,10 @@
     dataLastMessage: "---"
     dataUserCount: 0
     dataIsJoined: False
-#    Image:
-#        source: "./images/chatframe_sprite.png"
-#        allow_stretch: True
-#        keep_ratio: False # I love this
+    Image:
+        source: "./images/chatframe_sprite.png"
+        allow_stretch: True
+        keep_ratio: False # I love this
     BoxLayout:
         id: chatFrameLayout
         orientation: "vertical"
@@ -111,11 +111,11 @@
         AnchorLayout:
             anchor_x: 'right'
             anchor_y: 'top'
-#            Image:
-#                source: "./images/participants_sprite.png"
-#                size_hint: (participants.size_hint[0], participants.size_hint[1])
-#                allow_stretch: True
-#                keep_ratio: False # I love this
+            Image:
+                source: "./images/participants_sprite.png"
+                size_hint: (participants.size_hint[0], participants.size_hint[1])
+                allow_stretch: True
+                keep_ratio: False # I love this
             Label:
                 id: participants
                 text: "Participants: " + root.dataMemberList
@@ -124,11 +124,11 @@
             AnchorLayout:
                 anchor_x: 'right'
                 anchor_y: 'center'
-#                Image:
-#                    source: "./images/chat_sprite.png"
-#                    size_hint: (0.69, chatHistory.size_hint[1])
-#                    allow_stretch: True
-#                    keep_ratio: False # I love this
+                Image:
+                    source: "./images/chat_sprite.png"
+                    size_hint: (0.69, chatHistory.size_hint[1])
+                    allow_stretch: True
+                    keep_ratio: False # I love this
                 Label:
                     id: chatHistory
                     text: root.dataChatHistory
@@ -141,11 +141,11 @@
             AnchorLayout:
                 anchor_x: 'right'
                 anchor_y: 'bottom'
-#                Image:
-#                    source: "./images/chat_input_sprite.png"
-#                    size_hint: (input.size_hint[0], input.size_hint[1])
-#                    allow_stretch: True
-#                    keep_ratio: False # I love this
+                Image:
+                    source: "./images/chat_input_sprite.png"
+                    size_hint: (input.size_hint[0], input.size_hint[1])
+                    allow_stretch: True
+                    keep_ratio: False # I love this
                 TextInput:
                     id: input
                     multiline: False
