@@ -21,9 +21,8 @@ class Room:
     def callbackRoomAction(self, data):
         return
 
-    def callbackRoomMessage(self, data):
+    def callbackRoomMessage(self, messageID, ownerID, content):
         print "Got Room MSG Callback"
-        (messageID, ownerID, content) = netstruct.unpack("b$b$b$", data)
         print "MessageID: " + messageID + " OwnerID: " + ownerID + " Content: " + content
         self.m_chatHistory.appendMessage(messageID, ownerID, content)
         return

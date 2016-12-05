@@ -8,6 +8,7 @@ import netstruct
 from threading import Thread
 import hashlib
 from time import sleep
+from construct import *
 
 @Singleton
 class NetworkInterface:
@@ -32,12 +33,19 @@ class NetworkInterface:
             3: self.handleRoomMessage
         }
 
+        self.m_lengthdString = Struct(
+            "length" / Int32ub,
+            "data" / String(this.length, encoding="utf8"),
+        )
+
     def handleRoomMessage(self, data):
         print "Handling Room Message"
-        (bRoomID), restData = netstruct.iter_unpack("b$", data)
-        roomID = bRoomID[0]
-        RoomManager.Instance().getRoomByID(roomID).callbackRoomMessage(restData)
-        (messageID, ownerID, content) = netstruct.unpack("b$b$b$", data)
+        (roomID, messageID, ownerID,), restData = netstruct.iter_unpack("b$b$b$", data)
+
+        content = self.m_lengthdString.parse(restData).data
+
+        RoomManager.Instance().getRoomByID(roomID).callbackRoomMessage(messageID, ownerID, content)
+
         RoomManager.Instance().notifyRoomsAboutUpdate(roomID, ownerID, messageID, content)
         return
 
@@ -97,7 +105,8 @@ class NetworkInterface:
 
     def sendRoomMessage(self, room, message):
         #RoomManager.Instace().getRoomByID(roomID)
-        data = netstruct.pack("b$b$", room.getRoomID(), message)
+        data = netstruct.pack("b$", room.getRoomID())
+        data += self.m_lengthdString.build(dict(length=len(message), data=message,))
         self.sendPacket(3, data)
 
     def login(self, username, password, callback):

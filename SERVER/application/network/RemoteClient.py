@@ -7,6 +7,7 @@ from application.network.ChatMessage import ChatMessage
 import netstruct
 import hashlib
 import bcrypt
+from construct import *
 
 class RemoteClient:
     def __init__(self, socketConnection):
@@ -34,15 +35,23 @@ class RemoteClient:
             7: self.handleRegister
         }
 
+        self.m_lengthdString = Struct(
+            "length" / Int32ub,
+            "data" / String(this.length, encoding="utf8"),
+        )
+
         self.sendHelloPacket()  # Initiate Key Exchange
 
     def getUserID(self):
         return self.m_clientNick
 
     def handleRoomMessage(self, data):
-        (roomid, message) = netstruct.unpack("b$b$", data)
+        (roomid, ), restData = netstruct.iter_unpack("b$", data)
+
+        messageData = self.m_lengthdString.parse(restData)
+
         room = RoomManager.Instance().getRoomByID(roomid)
-        room.broadcastRoomMessage(ChatMessage(self, roomid, message))
+        room.broadcastRoomMessage(ChatMessage(self, roomid, messageData.data))
 
     def handleJoinRoomRequest(self, data):
         (roomid, password) = netstruct.unpack("b$b$", data)
@@ -53,7 +62,9 @@ class RemoteClient:
             print "User Joined Room " + room.getRoomName()
 
     def broadcastMessage(self, message):
-        msgData = netstruct.pack("b$b$b$b$", message.getRoomID(), message.getMessageID(), message.getOwnerID(), message.getMessage())
+        msgData = netstruct.pack("b$b$b$", message.getRoomID(), message.getMessageID(), message.getOwnerID())
+        content = message.getMessage()
+        msgData += self.m_lengthdString.build(dict(length=len(content), data=content, ))
         self.sendPacket(3, msgData)
         return
 
