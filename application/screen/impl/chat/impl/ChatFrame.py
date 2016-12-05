@@ -5,9 +5,7 @@ from application.network.NetworkInterface import NetworkInterface
 class ChatFrame(Screen):
     def switch(self, roomID):
         self.parent.current = "chat"
-        # self.parent.parent.parent.get_screen('chatHandler').createExampleChat() # switches interface
         self.parent.parent.parent.get_screen('chatHandler').switchChat(roomID)
-        # TODO self.parent.get_screen('chatHandler').switchChat(chatId)
 
     # Load the chat
     def clickChatFrame(self, roomLabel, roomID, roomName):  # groupName / chatName

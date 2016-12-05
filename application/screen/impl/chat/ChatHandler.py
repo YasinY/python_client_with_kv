@@ -1,5 +1,6 @@
 import os
 
+import time
 from kivy.uix.image import Image
 from kivy.uix.screenmanager import Screen
 from application.network.NetworkInterface import NetworkInterface
@@ -11,6 +12,7 @@ from application.screen.impl.chat.impl.ChatFrame import ChatFrame
 # INTERFACE for CHATS (LEFT NODES) AND CHAT (RIGHT NODE)
 class ChatHandler(Screen):
     def roomAddCallback(self, roomID, roomType, userCount, roomName):
+        time.sleep(0.2)
         self.appendChatFrame(roomName, roomID, userCount)
         RoomManager.Instance().addRoom(roomID, roomName, userCount)
 
